@@ -71,7 +71,7 @@ const Main= () => {
 
 React.useEffect(()=>{
 
-fetch(`https://workflow.developerscope.com/api/workflows/${id}/${createdBy}`)
+fetch(`https://workflow.developerscope.com/api/workflows/${id.replaceAll(' ','-')}/${createdBy}`)
 .then(res=>res.json())
 .then(response=>{
   if(response?.nodes && response?.connections){
