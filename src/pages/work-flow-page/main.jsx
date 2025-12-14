@@ -159,7 +159,7 @@ const Main= () => {
     
     setNodes(prev => [...prev, newNode]);
     
-    const reg = await fetch("https://2kai-agent.com/app/register-webhook", {
+    const reg = await fetch("https://developerscope.com/app/register-webhook", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ path: randomString }),
@@ -222,7 +222,7 @@ const Main= () => {
     
     setNodes(prev => [...prev, newNode]);
     
-    const reg = await fetch("https://2kai-agent.com/app/register-webhook", {
+    const reg = await fetch("https://developescope.com/app/register-webhook", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ path: randomString }),
@@ -1530,7 +1530,7 @@ const executeWorkflowFromNode = async (selectedNodeId = null) => {
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-2">
             
-            <span className="text-xl font-bold">2kai</span>
+            <span className="text-xl font-bold">Dev</span>
           </div>
           <div className="h-6 w-px bg-gray-600"></div>
           <input

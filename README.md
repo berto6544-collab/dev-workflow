@@ -1,4 +1,4 @@
-# 🧠 2kai Workflow Builder
+# 🧠 Developerscope Workflow Builder
 
 A custom **React-based visual workflow builder** inspired by [n8n](https://n8n.io), allowing users to create, connect, and execute custom logic flows via a drag-and-drop node system.
 
