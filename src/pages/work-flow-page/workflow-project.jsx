@@ -24,6 +24,7 @@ const Main= () => {
   const {createdBy} = React.useContext(AuthApi);
   const [nodes, setNodes] = useState([]);
   const [connections, setConnections] = useState([]);
+  const [workflowNode, setWorkflowNode] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [draggedNode, setDraggedNode] = useState(null);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -74,7 +75,7 @@ fetch(`https://workflow.developerscope.com/api/workflows/${id}/${createdBy}`)
 .then(res=>res.json())
 .then(response=>{
   if(response?.nodes && response?.connections){
-    setWorkflowName(response?.name)
+    setWorkflowNode(response)
     setNodes(response.nodes);
     setConnections(response.connections);
   }
@@ -1342,13 +1343,13 @@ const executeWorkflowFromNode = async (selectedNodeId = null) => {
     form.append('createdBy',createdBy);
 
    
-    fetch('https://workflow.developerscope.com/api/workflows/',{
-      method:'POST',
+    fetch(`https://workflow.developerscope.com/api/workflows/${workflowNode?.id}`,{
+      method:'PUT',
        headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      name: workflowName.replaceAll(' ', '-'),
+      name: id,
       nodes,
       connections,
       createdBy
