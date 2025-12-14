@@ -6,18 +6,21 @@ import {
   CheckCircle,
   Plus
 } from 'lucide-react';
-import NodeFunction  from './util/util';
-import NodeComponent from './components/nodes';
+import {
+  useParams
+} from "react-router-dom";
 import RenderFormField from './components/PanelField';
 import { nodeTypes,getNodeConfig } from './util/nodeArrays';
 import { sleep } from './util/utilResponse';
 import {reactLocalStorage} from 'reactjs-localstorage';
 import AuthApi from '../../components/AuthApi';
+import NodeFunction  from './util/util';
+import NodeComponent from './components/nodes';
 
 
 const Main= () => {
 
-  
+  const {id} = useParams();
   const {createdBy} = React.useContext(AuthApi);
   const [nodes, setNodes] = useState([]);
   const [connections, setConnections] = useState([]);
@@ -27,7 +30,7 @@ const Main= () => {
   const [connectionStart, setConnectionStart] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [prompt, setPrompt] = useState('');
-  const [workflowName, setWorkflowName] = useState('My Workflow');
+  const [workflowName, setWorkflowName] = useState(id.replaceAll('-'," "));
   const [panelStatus, setPanelStatus] = useState('parameter');
   const [isExecuting, setIsExecuting] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -65,7 +68,20 @@ const Main= () => {
 
  
 
+React.useEffect(()=>{
 
+fetch(`https://workflow.developerscope.com/api/workflows/${id}/${createdBy}`)
+.then(res=>res.json())
+.then(response=>{
+  if(response?.nodes && response?.connections){
+    setWorkflowName(response?.name)
+    setNodes(response.nodes);
+    setConnections(response.connections);
+  }
+});
+
+
+},[])
 
 
   const handleCanvasMouseMove = useCallback((e) => {
@@ -145,7 +161,7 @@ const Main= () => {
      
 
       const newNode = {
-      id: `node-${nodeIdCounter.current++}`,
+      id: `node-${nodes.length == 0?0:nodes.length}`,
       type: draggedNode.id,
       name: draggedNode.name,
       icon: draggedNode.icon,
@@ -174,7 +190,7 @@ const Main= () => {
 
     }else{
     const newNode = {
-      id: `node-${nodeIdCounter.current++}`,
+      id: `node-${nodes.length == 0?0:nodes.length}`,
       type: draggedNode.id,
       name: draggedNode.name,
       icon: draggedNode.icon,
@@ -208,7 +224,7 @@ const Main= () => {
      
 
       const newNode = {
-      id: `node-${nodeIdCounter.current++}`,
+      id: `node-${nodes.length == 0?0:nodes.length}`,
       type: nodeType.id,
       name: nodeType.name,
       icon: nodeType.icon,
@@ -237,7 +253,7 @@ const Main= () => {
 
     }else{
     const newNode = {
-      id: `node-${nodeIdCounter.current++}`,
+      id: `node-${nodes.length == 0?0:nodes.length}`,
       type: nodeType.id,
       name: nodeType.name,
       icon: nodeType.icon,
@@ -1749,7 +1765,6 @@ const executeWorkflowFromNode = async (selectedNodeId = null) => {
           >
             {nodes.length > 0 &&  nodes.map((node) => (
               <NodeComponent
-                //key={node.id}
                 node={node}
                 canvasRef={canvasRef}
                 canvasOffset={canvasOffset}

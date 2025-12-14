@@ -6,7 +6,7 @@ const NodeComponent = ({ node, onNodeClick, onStartConnection, onDelete,handleNo
     const [isHolding, setIsHolding] = useState(false);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
     const [holdTimeout, setHoldTimeout] = useState(null);
-    const Icon = node.icon;
+    const Icon = node.icon.displayName || node.icon;
     const nodeRef = React.useRef(null);
 
 const getCoordinates = (e) => {

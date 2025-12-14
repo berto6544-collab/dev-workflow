@@ -10,14 +10,22 @@ import {
 import AuthApi from "./components/AuthApi";
 import { Home, TrendingUp, MessageCircle, Bot, ChartColumn } from 'lucide-react';
 import Cookies from 'js-cookie';
-
+import {reactLocalStorage} from 'reactjs-localstorage';
 
 const WorkFlow = React.lazy(() => import("./pages/work-flow-page/main"));
+const WorkFlowProject = React.lazy(() => import("./pages/work-flow-page/workflow-project"));
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
 
 function App() {
+
+  const randomString = (length = 10) => {
+  return Math.random().toString(36).substring(2, 2 + length);
+};
+
+
+
   const token = Cookies.get('token')?Cookies.get('token'):''
   const [auth, setAuth] = React.useState(token);
   const [Credit, setCredit] = React.useState("0");
@@ -25,6 +33,7 @@ function App() {
   const [userid, setuserId] = React.useState(0);
   const [theme, setTheme] = React.useState("light");
   const [activeTab, setActiveTab] = useState('Home');
+  const [createdBy, setCreatedBy] = useState(null);
   const [isLoaded, setLoaded] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
  const sidebarItems = [
@@ -41,11 +50,18 @@ function App() {
    
 
   React.useEffect(() => {
-    
+    const id = randomString(12);
    setLoaded(true);
     
     // Connect using your HTTPS domain
-   
+
+   if(!reactLocalStorage.get('createdBy')){
+     reactLocalStorage.set('createdBy',randomString(12));
+     setCreatedBy(id);
+   }else{
+    setCreatedBy(reactLocalStorage.get('createdBy'));
+   }
+
    
   }, []);
 
@@ -71,6 +87,7 @@ function App() {
             isLoaded,
             setIsMobileMenuOpen,
             isMobileMenuOpen,
+            createdBy,
             sidebarItems
           }}
         >
@@ -109,7 +126,11 @@ const Routess = ({ UserData }) => {
      
     <Routes>
       
-     
+     <Route
+        path={"/project/:id"}
+        exact
+        element={<WorkFlowProject userData={UserData.length > 0 ? UserData : []} />}
+      />
        
      
       <Route

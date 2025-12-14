@@ -69,7 +69,7 @@ const timeOutHandler = async (node, setNodes, setIsExecuting, data) => {
 const webHookHandler = async (node, setNodes, setIsExecuting, data) => {
   updateNodeStatus(node, setNodes, 'running', 'Processing webhook');
   const datta = data || getResponse();
-  const webhookUrl = node.function?.url || 'https://2kai-agent.com/app/webhook/'+node.path;
+  const webhookUrl = node.function?.url || 'https://workflow.developerscope.com/app/webhook/'+node.path;
   const method = node.function?.method || 'POST';
   
   try {
